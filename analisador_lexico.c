@@ -270,7 +270,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q7: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("PROGRAM \n");
         return PROGRAM;
     } else {
@@ -292,7 +292,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q11: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("PRINT \n");
         return PRINT;
     } else {
@@ -316,7 +316,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q15: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("INT \n");
         return INT;
     } else {
@@ -324,7 +324,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q17: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("IF \n");
         return IF;
     } else {
@@ -353,7 +353,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q22: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("true \n");
         return TRUE;
     } else {
@@ -382,7 +382,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q27: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("bool \n");
         return BOOL;
     }
@@ -418,7 +418,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q33: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("false \n");
         return FALSE;
     } else {
@@ -433,7 +433,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q101: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("for \n");
         return FOR;
     } else {
@@ -462,7 +462,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q49: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("void \n");
         return VOID;
     } else {
@@ -498,7 +498,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q44: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("while \n");
         return WHILE;
     } else {
@@ -506,7 +506,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q51: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("+ \n");
         return MAIS;
     } else {
@@ -514,7 +514,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q52: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("- \n");
         return MENOS;
     } else {
@@ -522,7 +522,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q53: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("/ \n");
         return DIVISAO;
     } else if (lookahead == '*') {
@@ -579,7 +579,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q91: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("COMENTARIO \n");
         return COMENTARIO;
     } else {
@@ -587,7 +587,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q54: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("* \n");
         return MULTIPLICACAO;
     } else {
@@ -595,7 +595,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q103: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf(", \n");
         return VIRGULA;
     } else {
@@ -610,7 +610,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q56: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("DIFERENTE \n");
         return DIFERENTE;
     } else {
@@ -618,7 +618,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q57: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("= \n");
         return IGUAL;
     } else if (lookahead == '=') {
@@ -628,7 +628,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q58: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("== \n");
         return COMPARACAO;
     } else {
@@ -636,7 +636,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q66: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("> \n");
         return MAIOR;
     } else if (lookahead == '=') {
@@ -646,7 +646,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q68: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf(">= \n");
         return MAIORIGUAL;
     } else {
@@ -654,7 +654,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q67: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("< \n");
         return MENOR;
     } else if (lookahead == '=') {
@@ -664,7 +664,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q69: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("<= \n");
         return MENORIGUAL;
     } else {
@@ -672,7 +672,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q75: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("( \n");
         return ABREPARENTESE;
     } else {
@@ -680,7 +680,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q74: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf(") \n");
         return FECHAPARENTESE;
     } else {
@@ -688,7 +688,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q77: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("{ \n");
         return ABRECHAVES;
     } else {
@@ -696,7 +696,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q76: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("} \n");
         return FECHACHAVES;
     } else {
@@ -704,7 +704,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q78: lookahead = fgetc(fp);
-    if (lookahead == ' ') {
+    if (lookahead == ' ' || lookahead == '\n') {
         printf("; \n");
         return PONTOVIRGULA;
     } else {
@@ -741,7 +741,7 @@ int scanner(FILE *fp, FILE *tokens) {
             lookahead == 'X' || lookahead == 'w' || lookahead == 'W' || lookahead == 'y' || lookahead == 'Y' || 
             lookahead == 'z' || lookahead == 'Z' || lookahead == 'c' ) {
         goto q90;
-    } else if (lookahead == ' ') {
+    } else if (lookahead == ' ' || lookahead == '\n') {
         printf("VARIAVEL \n");
         return VARIAVEL;
     } else {
