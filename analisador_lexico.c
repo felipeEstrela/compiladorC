@@ -5,6 +5,7 @@ Bryam Kim - 31637450
 Gustavo Getulio - 31686508
 */
 int linha = 1;
+int tam = 0;
 #define PROGRAM 1 
 #define IF 2
 #define ELSE 3 
@@ -179,6 +180,7 @@ int scanner(FILE *fp, FILE *tokens) {
     char lookahead;
     
     q0: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'p') {
         goto q1;
     } else if (lookahead == 'i'){
@@ -227,12 +229,13 @@ int scanner(FILE *fp, FILE *tokens) {
         goto q89;
     } else if (lookahead >= '0' && lookahead <= '9'){
         goto q105;
-    } else if (lookahead == ' ' || lookahead == '\n' || lookahead == '\0') {
+    } else if (lookahead == '\0') {
         fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ESPACO;
     }
 
     q1: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'r') {
         goto q2;
     } else {
@@ -241,6 +244,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q2: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'o') {
         goto q3;
     } else if(lookahead == 'i'){
@@ -251,6 +255,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q3: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'g') {
         goto q4;
     } else {
@@ -259,6 +264,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q4: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'r') {
         goto q5;
     } else {
@@ -267,6 +273,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q5: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'a') {
         goto q6;
     } else {
@@ -275,6 +282,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q6: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'm') {
         goto q7;
     } else {
@@ -283,6 +291,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q7: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("PROGRAM  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -294,6 +303,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q9: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'n') {
         goto q10;
     } else {
@@ -302,6 +312,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
    
     q10: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 't') {
         goto q11;
     } else {
@@ -310,6 +321,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q11: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("PRINT  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -321,6 +333,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q13: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'f') {
         goto q17;
     } else if (lookahead == 'n'){
@@ -331,6 +344,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q14: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 't') {
         goto q15;
     } else {
@@ -339,6 +353,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q15: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("INT  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -350,6 +365,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q17: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("IF  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -361,6 +377,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q19: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'r') {
         goto q20;
     } else {
@@ -369,6 +386,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q20: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'u') {
         goto q21;
     } else {
@@ -377,6 +395,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q21: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'e') {
         goto q22;
     } else {
@@ -385,6 +404,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q22: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("true  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -396,6 +416,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q24: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'o') {
         goto q25;
     } else {
@@ -404,6 +425,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
   
     q25: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'o') {
         goto q26;
     } else {
@@ -412,6 +434,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
    
     q26: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'l') {
         goto q27;
     } else {
@@ -420,6 +443,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q27: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("bool  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -428,6 +452,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q29: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'o') {
         goto q100;
     } else if(lookahead == 'a'){
@@ -438,6 +463,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q30: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'l') {
         goto q31;
     } else {
@@ -446,6 +472,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q31: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 's') {
         goto q32;
     } else {
@@ -454,6 +481,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
    
     q32: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'e') {
         goto q33;
     } else {
@@ -462,6 +490,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q33: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("false  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -473,6 +502,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q100: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'r') {
         goto q101;
     } else {
@@ -481,6 +511,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q101: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("for  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -492,6 +523,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q46: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'o') {
         goto q47;
     } else {
@@ -500,6 +532,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q47: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'i') {
         goto q48;
     } else {
@@ -508,6 +541,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q48: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'd') {
         goto q49;
     } else {
@@ -516,6 +550,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q49: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("void  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -527,6 +562,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q40: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'h') {
         goto q41;
     } else {
@@ -535,6 +571,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q41: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'i') {
         goto q42;
     } else {
@@ -543,6 +580,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q42: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'l') {
         goto q43;
     } else {
@@ -551,6 +589,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q43: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'e') {
         goto q44;
     } else {
@@ -559,6 +598,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q44: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("while  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -570,6 +610,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q51: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("+  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -581,6 +622,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q52: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("-  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -592,6 +634,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q53: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("/  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -605,6 +648,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q86: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == '0' || lookahead == '1' || lookahead == '2' || lookahead == '3' || lookahead == '4' || lookahead == '5' || 
             lookahead == '6' || lookahead == '7' || lookahead == '8' || lookahead == '9' || lookahead == 'a' ||
             lookahead == 'a' || lookahead == 'A' || lookahead == 'b' || lookahead == 'B' || lookahead == 'c' ||
@@ -625,6 +669,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q87: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == '0' || lookahead == '1' || lookahead == '2' || lookahead == '3' || lookahead == '4' || lookahead == '5' || 
             lookahead == '6' || lookahead == '7' || lookahead == '8' || lookahead == '9' || lookahead == 'a' ||
             lookahead == 'a' || lookahead == 'A' || lookahead == 'b' || lookahead == 'B' || lookahead == 'c' ||
@@ -647,6 +692,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q88: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == '/') {
         goto q91;
     } else {
@@ -655,6 +701,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q91: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("COMENTARIO  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -666,6 +713,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q54: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("*  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -677,6 +725,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q103: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf(",  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -688,6 +737,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q55: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == '=') {
         goto q56;
     } else {
@@ -696,6 +746,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q56: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("DIFERENTE  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -707,6 +758,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q57: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("=  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -720,6 +772,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q58: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("==  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -731,6 +784,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q66: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf(">  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -744,6 +798,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q68: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf(">=  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -755,6 +810,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q67: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("<  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -768,6 +824,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q69: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("<=  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -779,6 +836,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q75: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("(  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -790,6 +848,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q74: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf(")  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -801,6 +860,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q77: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("{  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -812,6 +872,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
     
     q76: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("}  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -823,6 +884,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q78: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf(";  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -834,6 +896,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q89: lookahead = fgetc(fp);
+    tam ++;
     if (    lookahead == 'a' || lookahead == 'a' || lookahead == 'A' || lookahead == 'b' || lookahead == 'B' || 
             lookahead == 'C' || lookahead == 'd' || lookahead == 'D' || lookahead == 'e' || lookahead == 'E' ||
             lookahead == 'f' || lookahead == 'F' || lookahead == 'g' || lookahead == 'G' || lookahead == 'h' ||
@@ -852,6 +915,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q90: lookahead = fgetc(fp);
+    tam ++;
     if (    lookahead == 'a' || lookahead == 'a' || lookahead == 'A' || lookahead == 'b' || lookahead == 'B' || 
             lookahead == 'C' || lookahead == 'd' || lookahead == 'D' || lookahead == 'e' || lookahead == 'E' ||
             lookahead == 'f' || lookahead == 'F' || lookahead == 'g' || lookahead == 'G' || lookahead == 'h' ||
@@ -875,6 +939,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q105: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead >= '0' && lookahead <= '9') {
         goto q105;
     } else if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
@@ -888,6 +953,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q35: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'l') {
         goto q36;
     } else {
@@ -896,6 +962,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q36: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 's') {
         goto q37;
     } else {
@@ -904,6 +971,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q37: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == 'e') {
         goto q38;
     } else {
@@ -912,6 +980,7 @@ int scanner(FILE *fp, FILE *tokens) {
     }
 
     q38: lookahead = fgetc(fp);
+    tam ++;
     if (lookahead == ' ' || lookahead == '\n'  ||  lookahead == '\0') {
         printf("ELSE  - Linha: %d\n", linha);
         if(lookahead == '\n' || lookahead == '\0') linha++;
@@ -936,7 +1005,7 @@ int main()
     /* Arquivo gerado apos analise contendo os tokens */
     arq_saida = fopen("tokens.txt", "w");
 
-    int tam = 0;
+    tam = 0;
 
     /*ENCONTRANDO O TAMANHO DO ARQUIVO*/
     while(fgetc(input) != EOF){
@@ -950,7 +1019,6 @@ int main()
 
     while(tam < fileLenght){
        scanner(input, arq_saida);
-       tam++;
     }
   
    return 0;
