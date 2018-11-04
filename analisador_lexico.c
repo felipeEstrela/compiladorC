@@ -6,12 +6,12 @@ Gustavo Getulio - 31686508
 */
 int linha = 1;
 int tam = 0;
-#define PROGRAM 1 
-#define IF 2
+#define PROGRAM 5
+#define IF 6
 #define ELSE 3 
 #define VOID 4 
-#define TRUE 5 
-#define FALSE 6 
+#define TRUE 1 
+#define FALSE 0 
 #define INT 7 
 #define BOOL 8 
 #define WHILE 9 
@@ -39,7 +39,7 @@ int tam = 0;
 #define DOISPONTOS 28
 #define VARIAVEL 29
 #define NUMERO 33
-#define ESPACO 34
+#define FIM 99
 #define ERROR -1
 
 /* Nome do arquivo com o codigo a ser analisado: codigo.txt
@@ -229,9 +229,10 @@ int scanner(FILE *fp, FILE *tokens) {
         goto q89;
     } else if (lookahead >= '0' && lookahead <= '9'){
         goto q105;
+    } else if (lookahead == ' ') {
+        goto q0;
     } else if (lookahead == '\0') {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
-        return ESPACO;
+        return FIM;
     }
 
     q1: lookahead = fgetc(fp);
@@ -239,7 +240,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'r') {
         goto q2;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -250,7 +250,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if(lookahead == 'i'){
         goto q9;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -259,7 +258,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'g') {
         goto q4;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -268,7 +266,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'r') {
         goto q5;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -277,7 +274,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'a') {
         goto q6;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -286,7 +282,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'm') {
         goto q7;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -298,7 +293,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", PROGRAM);
         return PROGRAM;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -307,7 +301,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'n') {
         goto q10;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
    
@@ -316,7 +309,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 't') {
         goto q11;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -328,7 +320,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", PRINT);
         return PRINT;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -339,7 +330,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == 'n'){
         goto q14;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -348,7 +338,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 't') {
         goto q15;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -360,7 +349,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", INT);
         return INT;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -372,7 +360,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", IF);
         return IF;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -381,7 +368,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'r') {
         goto q20;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -390,7 +376,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'u') {
         goto q21;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -399,7 +384,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'e') {
         goto q22;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -411,7 +395,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", TRUE);
         return TRUE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -420,7 +403,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'o') {
         goto q25;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
   
@@ -429,7 +411,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'o') {
         goto q26;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
    
@@ -438,7 +419,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'l') {
         goto q27;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -458,7 +438,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if(lookahead == 'a'){
         goto q30;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -467,7 +446,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'l') {
         goto q31;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -476,7 +454,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 's') {
         goto q32;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
    
@@ -485,7 +462,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'e') {
         goto q33;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -497,7 +473,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", FALSE);
         return FALSE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -506,7 +481,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'r') {
         goto q101;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -518,7 +492,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", FOR);
         return FOR;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -527,7 +500,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'o') {
         goto q47;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -536,7 +508,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'i') {
         goto q48;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -545,7 +516,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'd') {
         goto q49;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -557,7 +527,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", VOID);
         return VOID;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -566,7 +535,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'h') {
         goto q41;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -575,7 +543,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'i') {
         goto q42;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -584,7 +551,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'l') {
         goto q43;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -593,7 +559,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'e') {
         goto q44;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -605,7 +570,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", WHILE);
         return WHILE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -617,7 +581,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", MAIS);
         return MAIS;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -629,7 +592,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", MENOS);
         return MENOS;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -643,7 +605,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == '*') {
         goto q86;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -664,7 +625,6 @@ int scanner(FILE *fp, FILE *tokens) {
             lookahead == 'z' || lookahead == 'Z') {
         goto q87;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -687,7 +647,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == '*') {
         goto q88;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -696,7 +655,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == '/') {
         goto q91;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -708,7 +666,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", COMENTARIO);
         return COMENTARIO;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -720,7 +677,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", MULTIPLICACAO);
         return MULTIPLICACAO;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -732,7 +688,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", VIRGULA);
         return VIRGULA;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -741,7 +696,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == '=') {
         goto q56;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -753,7 +707,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", DIFERENTE);
         return DIFERENTE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -767,7 +720,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == '=') {
         goto q58;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -779,7 +731,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", COMPARACAO);
         return COMPARACAO;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -793,7 +744,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == '=') {
         goto q68;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -805,7 +755,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", MAIORIGUAL);
         return MAIORIGUAL;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -819,7 +768,6 @@ int scanner(FILE *fp, FILE *tokens) {
     } else if (lookahead == '=') {
         goto q69;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -831,7 +779,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", MENORIGUAL);
         return MENORIGUAL;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -843,7 +790,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", ABREPARENTESE);
         return ABREPARENTESE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -855,7 +801,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", FECHAPARENTESE);
         return FECHAPARENTESE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -867,7 +812,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", ABRECHAVES);
         return ABRECHAVES;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
     
@@ -879,7 +823,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", FECHACHAVES);
         return FECHACHAVES;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -891,7 +834,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", PONTOVIRGULA);
         return PONTOVIRGULA;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -910,7 +852,6 @@ int scanner(FILE *fp, FILE *tokens) {
             lookahead == 'z' || lookahead == 'Z' || lookahead == 'c' ) {
         goto q90;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -934,7 +875,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", VARIAVEL);
         return VARIAVEL;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -948,7 +888,6 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", NUMERO); 
         return NUMERO;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -957,7 +896,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'l') {
         goto q36;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -966,7 +904,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 's') {
         goto q37;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -975,7 +912,6 @@ int scanner(FILE *fp, FILE *tokens) {
     if (lookahead == 'e') {
         goto q38;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
     }
 
@@ -987,8 +923,105 @@ int scanner(FILE *fp, FILE *tokens) {
         fprintf(tokens, "TOKEN %d \n", ELSE);
         return ELSE;
     } else {
-        fprintf(tokens, "ERRO LEXICO LINHA %d \n", linha);
         return ERROR;
+    }
+}
+
+// OK
+int  match(node_t * head, int palavra){
+    if (head != NULL) {
+        if (head->token->codigo == palavra){
+            printf("CODIGO: %d, PALAVRA: %d\n", head->token->codigo, palavra);
+            head = head->next;
+            return TRUE;
+        }
+    }
+    return FALSE;  
+}
+
+// OK
+int relacao(node_t * head) {
+    node_t * current = head;
+    if(
+        match(current, COMPARACAO) || match(current, DIFERENTE) || match(current, MENOR) ||
+        match(current, MAIOR) ||match(current, MENORIGUAL) ||match(current, MAIORIGUAL)
+    ){
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// OK
+int variavel(node_t * head) {
+    node_t * current = head;
+    if(match(current, VARIAVEL)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+// OK
+int fator(node_t * head) {
+    node_t * current = head;
+    if (variavel(current) || match(current, NUMERO) || match(current, TRUE) || match(current, FALSE)) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// OK
+int termo(node_t * head) {
+    node_t * current = head;
+    if(fator(current)) {
+        current = current->next;
+        if(match(current, MULTIPLICACAO) || match(current, DIVISAO)) {
+            current = current->next;
+            termo(current);
+        } else {
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+// OK
+int expressaoSimples(node_t * head) {
+    node_t * current = head;
+    if(match(current, MAIS) || match(current, MENOS)) {
+        current = current->next;
+        if(termo(current)) {
+            current = current->next;
+            if(match(current, MAIS) || match(current, MENOS)) {
+                expressaoSimples(current);
+            }
+            return TRUE;
+        }
+    } else if(termo(current)) {
+        current = current->next;
+        if(match(current, MAIS) || match(current, MENOS)) {
+            expressaoSimples(current);
+        }
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+// OK
+int expressao(node_t * head) {
+    node_t * current = head;
+    if(expressaoSimples(current)) {
+        current->next;
+        if(relacao(current)) {
+            current->next;
+            if(expressaoSimples(current)) {
+                return TRUE;
+            }
+            return FALSE;
+        }
+        return TRUE;
     }
 }
 
@@ -998,9 +1031,10 @@ int main()
 
     node_t *head = NULL;
     head = malloc(sizeof(node_t));
+    head->next = NULL;
 
     /* Arquivo do codigo AlgC que deve ser analisado */
-    input = openFile("codigo.txt");
+    input = openFile("codigo_teste.txt");
 
     /* Arquivo gerado apos analise contendo os tokens */
     arq_saida = fopen("tokens.txt", "w");
@@ -1016,10 +1050,30 @@ int main()
 
     /*RETORNA PARA O COMEÇO DO ARQUIVO*/
     fseek(input, 0, SEEK_SET);
+    if (head == NULL)
+    {
+        return 1;
+    }
 
     while(tam < fileLenght){
-       scanner(input, arq_saida);
+        token_t *t = NULL;
+        t = malloc(sizeof(token_t));
+        t->linha = linha;
+        int codigo = scanner(input, arq_saida);
+        t->codigo = codigo;
+        push_end(head, t);
+        if(codigo == -1) {
+            printf("erro, linha %d\n", linha);
+            break;
+        }
     }
+    pop(&head);
+    print_list(head);
   
-   return 0;
+    if (expressao(head)) {
+        printf("correto");
+    } else {
+        printf("errado");
+    };
+    return 0;
 }
