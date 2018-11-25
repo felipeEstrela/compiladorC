@@ -1,0 +1,8 @@
+program _correto {
+int _a , _b , _c ;
+bool _d , _e , _f ;
+_a = 1 ;
+if ( _a < 1 ) {
+}
+_a = 2 ;
+}
