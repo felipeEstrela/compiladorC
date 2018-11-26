@@ -9,8 +9,6 @@ Gustavo Getulio - 31686508
 #include <string.h>
 #include <ctype.h>
 
-int linha = 1;
-int tam = 0;
 #define TAMANHO_MAX_TOKEN 30
 #define PROGRAM 5
 #define IF 6
@@ -47,6 +45,7 @@ int tam = 0;
 #define NUMERO 33
 #define FIM 99
 #define ERROR -1
+
 int str_to_codigo(char str[TAMANHO_MAX_TOKEN])
 {
     if (strcmp(str, "program") == 0)
@@ -122,6 +121,8 @@ typedef struct token
     int linha;
     int codigo;
     char str[TAMANHO_MAX_TOKEN];
+    int tipo;
+    int escopo;
 } token_t;
 
 typedef struct node
@@ -130,37 +131,48 @@ typedef struct node
     struct node *next;
 } node_t;
 
-int match(node_t *head, int palavra);
-int program(node_t *head);
-int printar(node_t *head);
+void adicionaTabelaSimbolos(node_t *head, int tipo);
+int atribuicao(node_t *head);
+int bloco(node_t *head);
+int boolean(node_t *head);
+int chamadaDeProcedimento(node_t *head);
+int comando(node_t *head);
+int comandoPrint(node_t *head);
 int comandoRepetitivo(node_t *head);
-int relacao(node_t *head);
+int comandoComposto(node_t *head);
+int comandoCondicional(node_t *head);
+int declaracaoFuncao(node_t *head);
+int declaracaoVariavel(node_t *head);
+int expressao(node_t *head);
 int expressaoSimples(node_t *head);
 int fator(node_t *head);
-int boolean(node_t *head);
-int termo(node_t *head);
-int expressao(node_t *head);
-int comandoCondicional(node_t *head);
+int listaIdentificadores(node_t *head, int tipo);
 int listaDeParametros(node_t *head);
-int chamadaDeProcedimento(node_t *head);
-int atribuicao(node_t *head);
-int comando(node_t *head);
-int comandoComposto(node_t *head);
+int match(node_t *head, int palavra);
 int parametroFormal(node_t *head);
 int parametrosFormais(node_t *head);
-int declaracaoFuncao(node_t *head);
 int parteDeclaracaoFuncao(node_t *head);
-int listaIdentificadores(node_t *head);
-int declaracaoVariavel(node_t *head);
-int bloco(node_t *head);
+int program(node_t *head);
+int relacao(node_t *head);
+int termo(node_t *head);
+
+node_t *tabelaSimbolos;
+int linha = 1;
+int tam = 0;
+int escopo = 1;
+int fileLenght = 0;
+int tipoVal = 0;
 
 void print_list(node_t *head)
 {
-    node_t *current = head;
+    node_t *current = head->next;
 
     while (current != NULL)
     {
-        printf("Codigo: %d, Linha: %d\n", current->token->codigo, current->token->linha);
+        if (current->token->codigo && current->token->linha)
+        {
+            printf("\nToken: %s Tipo: %d Escopo: %d Linha: %d", current->token->str, current->token->tipo, current->token->escopo, current->token->linha);
+        }
         current = current->next;
     }
 }
@@ -168,7 +180,7 @@ void print_list(node_t *head)
 void push_end(node_t *head, token_t *val)
 {
     node_t *current = malloc(sizeof(node_t));
-    ;
+
     current = head;
     while (current->next != NULL)
     {
@@ -265,7 +277,42 @@ node_t *remove_by_index(node_t **head, int n)
     return retval;
 }
 
-int fileLenght = 0;
+void adicionaTabelaSimbolos(node_t *tabela, int tipo)
+{
+    token_t *token = tabela->token;
+    token->tipo = tipo;
+    token->escopo = escopo;
+    push_end(tabelaSimbolos, token);
+}
+
+int procuraTabelaSimbolos(node_t *tabela, token_t *token)
+{
+    node_t *current = tabela->next;
+    int achou = 0;
+    int tipo = 0;
+    int escopo = 0;
+
+    while (current != NULL)
+    {
+        if (strcmp(token->str, current->token->str) == 0)
+        {
+            achou = 1;
+            if (current->token->escopo > escopo)
+            {
+                tipo = current->token->tipo;
+            }
+        }
+        current = current->next;
+    }
+    if (achou == 1)
+    {
+        return tipo;
+    }
+    else
+    {
+        return ERROR;
+    }
+}
 
 FILE *openFile(char *nomeArq)
 {
@@ -454,8 +501,7 @@ q1:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q2:
@@ -475,8 +521,7 @@ q2:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q3:
@@ -490,8 +535,7 @@ q3:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q4:
@@ -505,8 +549,7 @@ q4:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q5:
@@ -520,8 +563,7 @@ q5:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q6:
@@ -535,8 +577,7 @@ q6:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q7:
@@ -550,8 +591,7 @@ q7:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q9:
@@ -565,8 +605,7 @@ q9:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q10:
@@ -580,8 +619,7 @@ q10:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q11:
@@ -595,8 +633,7 @@ q11:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q13:
@@ -616,8 +653,7 @@ q13:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q14:
@@ -631,8 +667,7 @@ q14:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q15:
@@ -646,8 +681,7 @@ q15:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q17:
@@ -661,8 +695,7 @@ q17:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q19:
@@ -676,8 +709,7 @@ q19:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q20:
@@ -691,8 +723,7 @@ q20:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q21:
@@ -706,8 +737,7 @@ q21:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q22:
@@ -721,8 +751,7 @@ q22:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q24:
@@ -736,8 +765,7 @@ q24:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q25:
@@ -751,8 +779,7 @@ q25:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q26:
@@ -766,8 +793,7 @@ q26:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q27:
@@ -797,8 +823,7 @@ q29:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q30:
@@ -812,8 +837,7 @@ q30:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q31:
@@ -827,8 +851,7 @@ q31:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q32:
@@ -842,8 +865,7 @@ q32:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q33:
@@ -857,8 +879,7 @@ q33:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q100:
@@ -872,8 +893,7 @@ q100:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q101:
@@ -887,8 +907,7 @@ q101:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q46:
@@ -902,8 +921,7 @@ q46:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q47:
@@ -917,8 +935,7 @@ q47:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q48:
@@ -932,8 +949,7 @@ q48:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q49:
@@ -947,8 +963,7 @@ q49:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q40:
@@ -962,8 +977,7 @@ q40:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q41:
@@ -977,8 +991,7 @@ q41:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q42:
@@ -992,8 +1005,7 @@ q42:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q43:
@@ -1007,8 +1019,7 @@ q43:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q44:
@@ -1022,8 +1033,7 @@ q44:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q51:
@@ -1037,8 +1047,7 @@ q51:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q52:
@@ -1052,8 +1061,7 @@ q52:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q53:
@@ -1073,8 +1081,7 @@ q53:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q86:
@@ -1100,8 +1107,7 @@ q86:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q87:
@@ -1133,8 +1139,7 @@ q87:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q88:
@@ -1148,8 +1153,7 @@ q88:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q91:
@@ -1163,8 +1167,7 @@ q91:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q54:
@@ -1178,8 +1181,7 @@ q54:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q103:
@@ -1193,8 +1195,7 @@ q103:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q55:
@@ -1208,8 +1209,7 @@ q55:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q56:
@@ -1223,8 +1223,7 @@ q56:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q57:
@@ -1244,8 +1243,7 @@ q57:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q58:
@@ -1259,8 +1257,7 @@ q58:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q66:
@@ -1280,8 +1277,7 @@ q66:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q68:
@@ -1295,8 +1291,7 @@ q68:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q67:
@@ -1316,8 +1311,7 @@ q67:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q69:
@@ -1331,8 +1325,7 @@ q69:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q75:
@@ -1346,8 +1339,7 @@ q75:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q74:
@@ -1361,8 +1353,7 @@ q74:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q77:
@@ -1376,8 +1367,7 @@ q77:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q76:
@@ -1391,8 +1381,7 @@ q76:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q78:
@@ -1406,8 +1395,7 @@ q78:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q89:
@@ -1431,8 +1419,7 @@ q89:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q90:
@@ -1462,8 +1449,7 @@ q90:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q105:
@@ -1483,8 +1469,7 @@ q105:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q35:
@@ -1498,8 +1483,7 @@ q35:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q36:
@@ -1513,8 +1497,7 @@ q36:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q37:
@@ -1528,8 +1511,7 @@ q37:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 
 q38:
@@ -1543,8 +1525,7 @@ q38:
     }
     else
     {
-        strcpy(token, "ERRO");
-        return *token;
+        return ERROR;
     }
 }
 
@@ -1554,6 +1535,10 @@ int match(node_t *head, int palavra)
     {
         if (head->token->codigo == palavra)
         {
+            if (head->token->codigo == ABRECHAVES)
+                escopo++;
+            if (head->token->codigo == FECHACHAVES)
+                escopo--;
             if (head->next != NULL)
                 *head = *head->next;
             return TRUE;
@@ -1588,11 +1573,33 @@ int variavel(node_t *head)
 
 int fator(node_t *head)
 {
-    if (variavel(head) || match(head, NUMERO) || match(head, TRUE) || match(head, FALSE) || expressaoSimples(head))
+    if (tipoVal == head->token->tipo)
     {
-        return TRUE;
+        if (variavel(head) || match(head, NUMERO) || match(head, TRUE) || match(head, FALSE) || expressaoSimples(head))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
     }
-    return FALSE;
+    else
+    {
+        char tipoValStr[5];
+        char tiporValStr[5];
+        if (head->token->tipo == INT)
+        {
+            strcpy(tipoValStr, "bool");
+            strcpy(tiporValStr, "int");
+        }
+        else
+        {
+            strcpy(tipoValStr, "int");
+            strcpy(tiporValStr, "bool");
+        }
+        printf("Erro Semantico - Tentando atribuir um valor %s a uma variavel %s", tiporValStr, tipoValStr);
+    }
 }
 
 int termo(node_t *head)
@@ -1672,18 +1679,26 @@ int expressao(node_t *head)
 
 int atribuicao(node_t *head)
 {
-    if (variavel(head))
+    if ((tipoVal = procuraTabelaSimbolos(tabelaSimbolos, head->token)) != ERROR)
     {
-        if (head->token->codigo == IGUAL)
+        if (variavel(head))
         {
-            if (match(head, IGUAL))
+            if (head->token->codigo == IGUAL)
             {
-                if (expressao(head) && match(head, PONTOVIRGULA))
+                if (match(head, IGUAL))
                 {
-                    return TRUE;
-                };
+                    if (expressao(head) && match(head, PONTOVIRGULA))
+                    {
+                        return TRUE;
+                    };
+                }
             }
         }
+    }
+    else
+    {
+        printf("ERRO SEMANTICO - Tentativa de atribuir para a variavel nao existente [ %s ]", head->token->str);
+        return FALSE;
     }
 }
 
@@ -1811,6 +1826,8 @@ int comandoPrint(node_t *head)
             match(head, FECHAPARENTESE) &&
             match(head, PONTOVIRGULA))
         {
+            printf("\nTabela de simbolos\n");
+            print_list(tabelaSimbolos);
             return TRUE;
         }
         else
@@ -1827,11 +1844,11 @@ int comandoPrint(node_t *head)
 int comando(node_t *head)
 {
     if (
+        comandoPrint(head) ||
         atribuicao(head) ||
         chamadaDeProcedimento(head) ||
         comandoCondicional(head) ||
-        comandoRepetitivo(head) ||
-        comandoPrint(head))
+        comandoRepetitivo(head))
     {
         return TRUE;
     }
@@ -1869,11 +1886,28 @@ int comandoComposto(node_t *head)
 
 int parametroFormal(node_t *head)
 {
-    if (
-        (match(head, INT) || match(head, BOOL)) &&
-        match(head, VARIAVEL))
+    int tipo;
+    if (head->token->codigo == INT)
     {
-        return TRUE;
+        head->token->tipo = INT;
+        tipo = INT;
+    }
+    if (head->token->codigo == BOOL)
+    {
+        head->token->tipo = BOOL;
+        tipo = BOOL;
+    }
+    if ((match(head, INT) || match(head, BOOL)))
+    {
+        adicionaTabelaSimbolos(head, tipo);
+        if (match(head, VARIAVEL))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
     }
     else
     {
@@ -1909,17 +1943,30 @@ int parametrosFormais(node_t *head)
 
 int declaracaoFuncao(node_t *head)
 {
-    if (
-        match(head, VOID) &&
-        match(head, VARIAVEL) &&
-        match(head, ABREPARENTESE) &&
-        (parametrosFormais(head) || 1 == 1) &&
-        match(head, FECHAPARENTESE) &&
-        match(head, ABRECHAVES) &&
-        bloco(head) &&
-        match(head, FECHACHAVES))
+    int tipo;
+    if (head->token->codigo == VOID)
     {
-        return TRUE;
+        head->token->tipo = VOID;
+        tipo = VOID;
+    }
+    if (match(head, VOID))
+    {
+        adicionaTabelaSimbolos(head, tipo);
+        if (
+            match(head, VARIAVEL) &&
+            match(head, ABREPARENTESE) &&
+            (parametrosFormais(head) || 1 == 1) &&
+            match(head, FECHAPARENTESE) &&
+            match(head, ABRECHAVES) &&
+            bloco(head) &&
+            match(head, FECHACHAVES))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
     }
     else
     {
@@ -1952,15 +1999,17 @@ int parteDeclaracaoFuncao(node_t *head)
         return FALSE;
     }
 }
-int listaIdentificadores(node_t *head)
+
+int listaIdentificadores(node_t *head, int tipo)
 {
     if (head->token->codigo == VARIAVEL)
     {
+        adicionaTabelaSimbolos(head, tipo);
         match(head, VARIAVEL);
         if (head->token->codigo == VIRGULA)
         {
             match(head, VIRGULA);
-            return listaIdentificadores(head);
+            return listaIdentificadores(head, tipo);
         }
         else
         {
@@ -1975,9 +2024,20 @@ int listaIdentificadores(node_t *head)
 
 int declaracaoVariavel(node_t *head)
 {
+    int tipo;
+    if (head->token->codigo == BOOL)
+    {
+        head->token->tipo = BOOL;
+        tipo = BOOL;
+    }
+    if (head->token->codigo == INT)
+    {
+        head->token->tipo = INT;
+        tipo = INT;
+    }
     if (
         (match(head, BOOL) || match(head, INT)) &&
-        listaIdentificadores(head) &&
+        listaIdentificadores(head, tipo) &&
         match(head, PONTOVIRGULA))
     {
         return TRUE;
@@ -2060,24 +2120,40 @@ int bloco(node_t *head)
 }
 int program(node_t *head)
 {
-    if (match(head, PROGRAM) &&
-        match(head, VARIAVEL) &&
-        match(head, ABRECHAVES) &&
-        bloco(head) &&
-        match(head, FECHACHAVES))
+    int tipo;
+    if (head->token->codigo == PROGRAM)
     {
-        return (TRUE);
+        head->token->tipo = PROGRAM;
+        tipo = PROGRAM;
     }
-    return (FALSE);
+    if (match(head, PROGRAM))
+    {
+        adicionaTabelaSimbolos(head, tipo);
+        if (match(head, VARIAVEL) &&
+            match(head, ABRECHAVES) &&
+            bloco(head) &&
+            match(head, FECHACHAVES))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+    return FALSE;
 }
 
 int main()
 {
     FILE *input, *arq_saida;
 
-    node_t *head = NULL;
-    head = malloc(sizeof(node_t));
-    head->next = NULL;
+    node_t *listaTokens = NULL;
+    listaTokens = malloc(sizeof(node_t));
+    listaTokens->next = NULL;
+
+    tabelaSimbolos = malloc(sizeof(node_t));
+    tabelaSimbolos->next = NULL;
 
     /* Arquivo do codigo AlgC que deve ser analisado */
     input = openFile("codigo.txt");
@@ -2095,7 +2171,7 @@ int main()
 
     /*RETORNA PARA O COMEÇO DO ARQUIVO*/
     fseek(input, 0, SEEK_SET);
-    if (head == NULL)
+    if (listaTokens == NULL)
     {
         return 1;
     }
@@ -2104,30 +2180,45 @@ int main()
     {
         token_t *t = malloc(sizeof(token_t));
         char token_str[TAMANHO_MAX_TOKEN] = {'\0'};
-        scanner(input, arq_saida, token_str);
+        int erro = 0;
+        erro = scanner(input, arq_saida, token_str);
+
         t->linha = linha;
-        int codigo;
-        codigo = str_to_codigo(token_str);
+
+        int codigo = str_to_codigo(token_str);
+        if (codigo == 1)
+            t->tipo = BOOL;
+        if (codigo == 0)
+            t->tipo = BOOL;
+        if (codigo == 33)
+            t->tipo = INT;
         t->codigo = codigo;
+
         strcpy(t->str, token_str);
-        fprintf(arq_saida, "%s \n", token_str);
-        push_end(head, t);
+
+        push_end(listaTokens, t);
+
         printf("token %s\n", t->str);
-        if (token_str == "ERRO")
+        fprintf(arq_saida, "%s \n", token_str);
+
+        if (erro == -1)
         {
-            printf("ERRO LEXICO na linha %d\n", linha);
-            break;
+            printf("\nERRO LEXICO no token %s - linha %d\n", t->str, linha);
+            return 0;
         }
     }
-    pop(&head);
 
-    if (program(head))
+    pop(&listaTokens);
+
+    if (program(listaTokens))
     {
-        printf("Analise sintatica OK");
+        printf("\nAnalise sintatica OK");
     }
     else
     {
-        printf("ERRO SINTATICO na linha %d", head->token->linha);
+        printf("\nERRO SINTATICO na linha %d", listaTokens->token->linha);
     };
+
+erroSemantico:
     return 0;
 }
